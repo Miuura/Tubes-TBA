@@ -127,24 +127,29 @@ tokens = []
 token = ""
 state = 'q0'
 temp = kalimat+'#' 
+struktur = []
 for i in range(len(temp)):
     if temp[i] != ' ':
         token += temp[i]
     state = TransitionTable[(state, temp[i])]
     if state == 'q21':
         print(f'Token: "{token}" Valid, kata tersebut merupakan Subjek')
+        struktur.append('Subjek')
         tokens.append(token)
         token = ""
     elif state == 'q41':
         print(f'Token: "{token}" Valid, kata tersebut merupakan Predikat')
+        struktur.append('Predikat')
         tokens.append(token)
         token = ""
     elif state == 'q53':
         print(f'Token: "{token}" Valid, kata tersebut merupakan Objek')
+        struktur.append('Objek')
         tokens.append(token)
         token = ""
     elif state == 'q79':
         print(f'Token: "{token}" Valid, kata tersebut merupakan Keterangan')
+        struktur.append('Keterangan')
         tokens.append(token)
         token = ""
     
@@ -172,14 +177,14 @@ else:
 tokens.append("EOS")
 stack = []
 nonterminal = ['START', 'S', 'P', 'O', 'K']
-terminal = ['ibu', 'ayah', 'anjing', 'siswa', 'saya', 'memasak', 'membaca', 'menulis', 'mengejar', 'belajar', 'nasi', 'buku', 'surat', 'bola', 'kimia', 'didapur', 'ditaman', 'dikamar', 'tadipagi', 'kemarin', 'EOS']
+terminal = ['ibu', 'ayah', 'anjing', 'siswa', 'saya', 'memasak', 'membaca', 'menulis', 'mengejar', 'belajar', 'nasi', 'buku', 'surat', 'bola', 'kimia', 'didapur', 'ditaman', 'dikamar', 'tadipagi', 'kemarin', 'EOS', 'epsilon']
 ParseTable = {}
 
-ParseTable[('START', 'ibu')] = ['S', 'P', 'O', 'K']
-ParseTable[('START', 'ayah')] = ['S', 'P', 'O', 'K']
-ParseTable[('START', 'anjing')] = ['S', 'P', 'O', 'K']
-ParseTable[('START', 'siswa')] = ['S', 'P', 'O', 'K']
-ParseTable[('START', 'saya')] = ['S', 'P', 'O', 'K']
+ParseTable[('START', 'ibu')] = ['S']
+ParseTable[('START', 'ayah')] = ['S']
+ParseTable[('START', 'anjing')] = ['S']
+ParseTable[('START', 'siswa')] = ['S']
+ParseTable[('START', 'saya')] = ['S']
 ParseTable[('START', 'memasak')] = ['error']
 ParseTable[('START', 'membaca')] = ['error']
 ParseTable[('START', 'menulis')] = ['error']
@@ -196,11 +201,11 @@ ParseTable[('START', 'dikamar')] = ['error']
 ParseTable[('START', 'tadipagi')] = ['error']
 ParseTable[('START', 'kemarin')] = ['error']
 ParseTable[('START', 'EOS')] = ['error']
-ParseTable[('S', 'ibu')] = ['ibu']
-ParseTable[('S', 'ayah')] = ['ayah']
-ParseTable[('S', 'anjing')] = ['anjing']
-ParseTable[('S', 'siswa')] = ['siswa']
-ParseTable[('S', 'saya')] = ['saya']
+ParseTable[('S', 'ibu')] = ['ibu', 'P']
+ParseTable[('S', 'ayah')] = ['ayah', 'P']
+ParseTable[('S', 'anjing')] = ['anjing', 'P']
+ParseTable[('S', 'siswa')] = ['siswa', 'P']
+ParseTable[('S', 'saya')] = ['saya', 'P']
 ParseTable[('S', 'memasak')] = ['error']
 ParseTable[('S', 'membaca')] = ['error']
 ParseTable[('S', 'menulis')] = ['error']
@@ -222,11 +227,11 @@ ParseTable[('P', 'ayah')] = ['error']
 ParseTable[('P', 'anjing')] = ['error']
 ParseTable[('P', 'siswa')] = ['error']
 ParseTable[('P', 'saya')] = ['error']
-ParseTable[('P', 'memasak')] = ['memasak']
-ParseTable[('P', 'membaca')] = ['membaca']
-ParseTable[('P', 'menulis')] = ['menulis']
-ParseTable[('P', 'mengejar')] = ['mengejar']
-ParseTable[('P', 'belajar')] = ['belajar']
+ParseTable[('P', 'memasak')] = ['memasak', 'O']
+ParseTable[('P', 'membaca')] = ['membaca', 'O']
+ParseTable[('P', 'menulis')] = ['menulis', 'O']
+ParseTable[('P', 'mengejar')] = ['mengejar', 'O']
+ParseTable[('P', 'belajar')] = ['belajar', 'O']
 ParseTable[('P', 'nasi')] = ['error']
 ParseTable[('P', 'buku')] = ['error']
 ParseTable[('P', 'surat')] = ['error']
@@ -248,17 +253,17 @@ ParseTable[('O', 'membaca')] = ['error']
 ParseTable[('O', 'menulis')] = ['error']
 ParseTable[('O', 'mengejar')] = ['error']
 ParseTable[('O', 'belajar')] = ['error']
-ParseTable[('O', 'nasi')] = ['nasi']
-ParseTable[('O', 'buku')] = ['buku']
-ParseTable[('O', 'surat')] = ['surat']
-ParseTable[('O', 'bola')] = ['bola']
-ParseTable[('O', 'kimia')] = ['kimia']
-ParseTable[('O', 'didapur')] = ['error']
-ParseTable[('O', 'ditaman')] = ['error']
-ParseTable[('O', 'dikamar')] = ['error']
-ParseTable[('O', 'tadipagi')] = ['error']
-ParseTable[('O', 'kemarin')] = ['error']
-ParseTable[('O', 'EOS')] = ['error']
+ParseTable[('O', 'nasi')] = ['nasi', 'K']
+ParseTable[('O', 'buku')] = ['buku', 'K']
+ParseTable[('O', 'surat')] = ['surat', 'K']
+ParseTable[('O', 'bola')] = ['bola', 'K']
+ParseTable[('O', 'kimia')] = ['kimia', 'K']
+ParseTable[('O', 'didapur')] = ['K']
+ParseTable[('O', 'ditaman')] = ['K']
+ParseTable[('O', 'dikamar')] = ['K']
+ParseTable[('O', 'tadipagi')] = ['K']
+ParseTable[('O', 'kemarin')] = ['K']
+ParseTable[('O', 'EOS')] = ['epsilon']
 ParseTable[('K', 'ibu')] = ['error']
 ParseTable[('K', 'ayah')] = ['error']
 ParseTable[('K', 'anjing')] = ['error']
@@ -279,7 +284,7 @@ ParseTable[('K', 'ditaman')] = ['ditaman']
 ParseTable[('K', 'dikamar')] = ['dikamar']
 ParseTable[('K', 'tadipagi')] = ['tadipagi']
 ParseTable[('K', 'kemarin')] = ['kemarin']
-ParseTable[('K', 'EOS')] = ['error']
+ParseTable[('K', 'EOS')] = ['epsilon']
 
 stack.append('#')
 stack.append('START')
@@ -298,6 +303,9 @@ while True:
             print(f'Token: "{tokens[indeks]}" Valid')
             stack.pop()
             indeks += 1
+        elif stack[-1] == 'epsilon':
+            print("Epsilon ditemukan, melakukan pop pada stack")
+            stack.pop()
         else:
             print(f'Token: "{tokens[indeks]}" Tidak Valid')
             break
@@ -310,13 +318,13 @@ while True:
         for i in range(len(temp)):
             stack.append(temp[len(temp)-1-i])
     elif stack[-1] == 'error':
-        print(f'\nError, kalimat "{kalimat}" tidak sesuai dengan grammar atau struktur SPOK')
+        print(f'\nError, kalimat "{kalimat}" tidak sesuai dengan grammar atau struktur SPOK/SPO/SPK/SP')
         break
     elif stack[-1] == '#':
         if tokens[indeks] == "EOS":
-            print(f'\nValid, kalimat "{kalimat}" sudah sesuai dengan grammar atau struktur SPOK')
+            print(f'\nValid, kalimat "{kalimat}" sudah sesuai dengan grammar. struktur pada kalimat tersebut adalah {struktur}')
         else:
-            print(f'\nError, kalimat "{kalimat}" tidak sesuai dengan grammar atau struktur SPOK')
+            print(f'\nError, kalimat "{kalimat}" tidak sesuai dengan grammar atau struktur SPOK/SPO/SPK/SP')
         break
 
 print("\n--------------------------------------------------------")
